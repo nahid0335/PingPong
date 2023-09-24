@@ -9,7 +9,7 @@ They can compete against another player controlling a second paddle on the oppos
 
 # ToDo
 - ~~increase ball speed with time~~
-- fix computer movement
+- ~~fix computer movement~~
 - add the start screen
 - add result screen
 - ~~fix random ball start~~
