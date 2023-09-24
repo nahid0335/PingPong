@@ -27,10 +27,22 @@ public class BallMovement : MonoBehaviour
 
     void StartBall()
     {
-        Rigidbody.velocity = new Vector2(-1,0) * (InitialSpeed + SpeedIncrease * HitCounter);
+        AddStartingForce();
+        // Rigidbody.velocity = new Vector2(-1,0) * (InitialSpeed + SpeedIncrease * HitCounter);
     }
 
-    void ResetBall()
+	public void AddStartingForce() {
+		var randomDirectionX = UnityEngine.Random.value < 0.5f ? -1.0f : 1.0f;
+		var randomDirectionY = UnityEngine.Random.value < 0.5f ? UnityEngine.Random.Range(-1.0f,-0.5f) : UnityEngine.Random.Range(0.5f,1.0f);
+
+		var direction = new Vector2(randomDirectionX,randomDirectionY);
+		AddForce(direction * (InitialSpeed + SpeedIncrease * HitCounter));
+	}
+
+	public void AddForce(Vector2 force)
+		=> Rigidbody.velocity = force;
+
+	void ResetBall()
     {
         Rigidbody.velocity = Vector2.zero;
         transform.position = Vector2.zero;
