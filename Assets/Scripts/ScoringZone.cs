@@ -13,7 +13,7 @@ public class ScoringZone : MonoBehaviour
 
 		if (ball is not null) {
 			var eventData = new BaseEventData(EventSystem.current);
-			this.scoreTrigger.Invoke(eventData);
+			scoreTrigger.Invoke(eventData);
 		}
 	}
 }
