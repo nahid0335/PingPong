@@ -2,45 +2,63 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	private int playerScore;
-	private int comScore;
+	public static GameManager gameManager { get; private set; }
+
+	public int playerScore;
+	public int comScore;
+	public int HitCounter;
 
 	[SerializeField]
-	public Paddle PlayerPaddle;
+	BallMovement ballMovement;
+
 	[SerializeField]
-	public Paddle comPaddle;
+	Text PlayerScoreText;
 	[SerializeField]
-	public Ball Ball;
-	[SerializeField]
-	public TMP_Text PlayerScoreText;
-	[SerializeField]
-	public TMP_Text ComScoreText;
+	Text ComScoreText;
+
+	private void Awake() {
+		gameManager = this;
+	}
 
 	public void IncreasePlayerScore()
 	{
 		++playerScore;
 		PlayerScoreText.text = playerScore.ToString();
 
-		ResetGame();
+		ResetBall();
 	}
 
 	public void IncreaseComScore()
 	{
 		++comScore;
 		ComScoreText.text = comScore.ToString();
-		
-		ResetGame();
+
+		ResetBall();
 	}
 
-	void ResetGame() 
+	void ResetBall()
 	{
-		PlayerPaddle.ResetPosition();
-		comPaddle.ResetPosition();
-		Ball.ResetPosition();
-		Ball.AddStartingForce();
+		if (comScore > 5 || playerScore > 5) {
+			EndGame();
+		}
+
+		ballMovement.Rigidbody.velocity = Vector2.zero;
+		ballMovement.transform.position = Vector2.zero;
+		HitCounter = 0;
+		Invoke("StartBall",2f);
+	}
+
+	void StartBall()
+	{
+		ballMovement.AddStartingForce();
+	}
+
+	void EndGame() {
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 }
