@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class StartUp : MonoBehaviour
 {
-    public void startGame()
-    {
-        SceneManager.LoadScene("PingPong");
-    }
+	public void StartGame()
+		=> SceneManager.LoadScene("PingPong");
 }
