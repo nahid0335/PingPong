@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager gameManager { get; private set; }
+	public static GameManager Instance;
 
 	public int playerScore;
 	public int comScore;
@@ -22,7 +19,11 @@ public class GameManager : MonoBehaviour
 	Text ComScoreText;
 
 	private void Awake() {
-		gameManager = this;
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Destroy(gameObject);
+		}
 	}
 
 	public void IncreasePlayerScore()
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
 
 	void ResetBall()
 	{
-		if (comScore > 5 || playerScore > 5) {
+		if (comScore > 4 || playerScore > 4) {
 			EndGame();
 		}
 
@@ -54,11 +55,8 @@ public class GameManager : MonoBehaviour
 	}
 
 	void StartBall()
-	{
-		ballMovement.AddStartingForce();
-	}
+		=> ballMovement.AddStartingForce();
 
-	void EndGame() {
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-	}
+	void EndGame()
+		=> SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 }

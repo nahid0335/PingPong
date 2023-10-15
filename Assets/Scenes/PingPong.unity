@@ -950,6 +950,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5e56616cefe1346989f14249055b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerScore: 0
+  comScore: 0
   HitCounter: 0
   ballMovement: {fileID: 1527649690}
   PlayerScoreText: {fileID: 1644827514}
@@ -1712,7 +1714,6 @@ MonoBehaviour:
   InitialSpeed: 7
   SpeedIncrease: 0.5
   Rigidbody: {fileID: 1527649686}
-  gameManager: {fileID: 1124713152}
 --- !u!1 &1588450824
 GameObject:
   m_ObjectHideFlags: 0
