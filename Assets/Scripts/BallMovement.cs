@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// movement of the ball
+/// </summary>
 public class BallMovement : MonoBehaviour
 {
     [SerializeField] float InitialSpeed = 1;
@@ -13,12 +16,32 @@ public class BallMovement : MonoBehaviour
 		Invoke("StartBall", 2f);
 	}
 
-	private void FixedUpdate()
+	void FixedUpdate()
         => Rigidbody.velocity = Vector2.ClampMagnitude(Rigidbody.velocity,InitialSpeed + (SpeedIncrease * GameManager.Instance.HitCounter));
 
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (collision.gameObject.name == "Player" || collision.gameObject.name == "AI") {
+			PlayerBounce(collision.transform);
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collision) {
+		if (transform.position.x > 0) {
+			GameManager.Instance.IncreasePlayerScore();
+		} else if (transform.position.x < 0) {
+			GameManager.Instance.IncreaseComScore();
+		}
+	}
+
+	/// <summary>
+	/// add force to the ball to start the ball movement
+	/// </summary>
 	void StartBall()
         => AddStartingForce();
 
+    /// <summary>
+    /// get a random direction and add force to the ball
+    /// </summary>
 	public void AddStartingForce() {
 		var randomDirectionX = Random.value < 0.5f ? -1.0f : 1.0f;
 		var randomDirectionY = Random.value < 0.5f ? Random.Range(-1.0f, -0.5f) : Random.Range(0.5f, 1.0f);
@@ -27,9 +50,17 @@ public class BallMovement : MonoBehaviour
 		AddForce(direction * (InitialSpeed + SpeedIncrease * GameManager.Instance.HitCounter));
 	}
 
-	public void AddForce(Vector2 force)
+    /// <summary>
+    /// apply the force to the ball
+    /// </summary>
+    /// <param name="force">force which will apply to the ball</param>
+	void AddForce(Vector2 force)
 		=> Rigidbody.velocity = force;
 
+    /// <summary>
+    /// set the direction of the ball
+    /// </summary>
+    /// <param name="hitObject">paddle</param>
     void PlayerBounce(Transform hitObject) 
     {
         ++GameManager.Instance.HitCounter;
@@ -46,18 +77,4 @@ public class BallMovement : MonoBehaviour
 
         Rigidbody.velocity = new Vector2(directionX,directionY) * (InitialSpeed + SpeedIncrease * GameManager.Instance.HitCounter);
     }
-
-	private void OnCollisionEnter2D(Collision2D collision) {
-		if (collision.gameObject.name == "Player" || collision.gameObject.name == "AI") {
-            PlayerBounce(collision.transform);
-        }
-	}
-
-	private void OnTriggerEnter2D(Collider2D collision) {
-		if (transform.position.x > 0) {
-			GameManager.Instance.IncreasePlayerScore();
-        } else if (transform.position.x < 0) {
-            GameManager.Instance.IncreaseComScore();
-        }
-	}
 }

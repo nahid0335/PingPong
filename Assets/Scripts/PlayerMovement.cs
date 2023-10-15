@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// player and AI movement
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
@@ -24,10 +27,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+	void FixedUpdate()
+		=> Rigidbody.velocity = IsAI ? PlayerMove * (MovementSpeed - (GameManager.Instance.HitCounter * 0.25f)) : PlayerMove * MovementSpeed;
+
+    /// <summary>
+    /// set the input of the player
+    /// </summary>
 	void InitiatePlayerControll()
         => PlayerMove = new Vector2(0, Input.GetAxisRaw("Vertical"));
 
-	private void InitiateComControll()
+    /// <summary>
+    /// set the input of the AI
+    /// </summary>
+	void InitiateComControll()
     {
 		if (Ball.transform.position.y > transform.position.y + 0.5f) {
             PlayerMove = new Vector2(0, 1);
@@ -37,7 +49,4 @@ public class PlayerMovement : MonoBehaviour
             PlayerMove = Vector2.zero;
         }
 	}
-
-	private void FixedUpdate()
-        => Rigidbody.velocity = IsAI ? PlayerMove * (MovementSpeed - (GameManager.Instance.HitCounter * 0.25f)) : PlayerMove * MovementSpeed;
 }

@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// GameManager to manage the game
+/// </summary>
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
 	Text ComScoreText;
 
 	private void Awake() {
+		// singleton
 		if (Instance == null) {
 			Instance = this;
 		} else {
@@ -26,6 +30,9 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// inscrease the player score and reset the ball position
+	/// </summary>
 	public void IncreasePlayerScore()
 	{
 		++playerScore;
@@ -34,6 +41,9 @@ public class GameManager : MonoBehaviour
 		ResetBall();
 	}
 
+	/// <summary>
+	/// increase the AI score and reset the ball position
+	/// </summary>
 	public void IncreaseComScore()
 	{
 		++comScore;
@@ -42,6 +52,9 @@ public class GameManager : MonoBehaviour
 		ResetBall();
 	}
 
+	/// <summary>
+	/// check if the game is over or reset the ball positon
+	/// </summary>
 	void ResetBall()
 	{
 		if (comScore > 4 || playerScore > 4) {
@@ -54,9 +67,15 @@ public class GameManager : MonoBehaviour
 		Invoke("StartBall",2f);
 	}
 
+	/// <summary>
+	/// start the game by adding force to the ball
+	/// </summary>
 	void StartBall()
 		=> ballMovement.AddStartingForce();
 
+	/// <summary>
+	/// go to the end game scene
+	/// </summary>
 	void EndGame()
 		=> SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 }
