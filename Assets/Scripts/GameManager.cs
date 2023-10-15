@@ -1,46 +1,81 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// GameManager to manage the game
+/// </summary>
 public class GameManager : MonoBehaviour
 {
-	private int playerScore;
-	private int comScore;
+	public static GameManager Instance;
+
+	public int playerScore;
+	public int comScore;
+	public int HitCounter;
 
 	[SerializeField]
-	public Paddle PlayerPaddle;
-	[SerializeField]
-	public Paddle comPaddle;
-	[SerializeField]
-	public Ball Ball;
-	[SerializeField]
-	public TMP_Text PlayerScoreText;
-	[SerializeField]
-	public TMP_Text ComScoreText;
+	BallMovement ballMovement;
 
+	[SerializeField]
+	Text PlayerScoreText;
+	[SerializeField]
+	Text ComScoreText;
+
+	private void Awake() {
+		// singleton
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Destroy(gameObject);
+		}
+	}
+
+	/// <summary>
+	/// inscrease the player score and reset the ball position
+	/// </summary>
 	public void IncreasePlayerScore()
 	{
 		++playerScore;
 		PlayerScoreText.text = playerScore.ToString();
 
-		ResetGame();
+		ResetBall();
 	}
 
+	/// <summary>
+	/// increase the AI score and reset the ball position
+	/// </summary>
 	public void IncreaseComScore()
 	{
 		++comScore;
 		ComScoreText.text = comScore.ToString();
-		
-		ResetGame();
+
+		ResetBall();
 	}
 
-	void ResetGame() 
+	/// <summary>
+	/// check if the game is over or reset the ball positon
+	/// </summary>
+	void ResetBall()
 	{
-		PlayerPaddle.ResetPosition();
-		comPaddle.ResetPosition();
-		Ball.ResetPosition();
-		Ball.AddStartingForce();
+		if (comScore > 4 || playerScore > 4) {
+			EndGame();
+		}
+
+		ballMovement.Rigidbody.velocity = Vector2.zero;
+		ballMovement.transform.position = Vector2.zero;
+		HitCounter = 0;
+		Invoke("StartBall",2f);
 	}
+
+	/// <summary>
+	/// start the game by adding force to the ball
+	/// </summary>
+	void StartBall()
+		=> ballMovement.AddStartingForce();
+
+	/// <summary>
+	/// go to the end game scene
+	/// </summary>
+	void EndGame()
+		=> SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 }

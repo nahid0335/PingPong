@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// player and AI movement
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
@@ -15,11 +16,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 PlayerMove;
 
     void Start()
-    {
-        Rigidbody = GetComponent<Rigidbody2D>();
-    }
+        => Rigidbody = GetComponent<Rigidbody2D>();
 
-    // Update is called once per frame
     void Update()
     {
         if (IsAI) {
@@ -29,24 +27,26 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void InitiatePlayerControll()
-    {
-        PlayerMove = new Vector2(0,Input.GetAxisRaw("Vertical"));
-    }
+	void FixedUpdate()
+		=> Rigidbody.velocity = IsAI ? PlayerMove * (MovementSpeed - (GameManager.Instance.HitCounter * 0.25f)) : PlayerMove * MovementSpeed;
 
-	private void InitiateComControll()
+    /// <summary>
+    /// set the input of the player
+    /// </summary>
+	void InitiatePlayerControll()
+        => PlayerMove = new Vector2(0, Input.GetAxisRaw("Vertical"));
+
+    /// <summary>
+    /// set the input of the AI
+    /// </summary>
+	void InitiateComControll()
     {
 		if (Ball.transform.position.y > transform.position.y + 0.5f) {
-            PlayerMove = new Vector2(0,1);
+            PlayerMove = new Vector2(0, 1);
         } else if (Ball.transform.position.y < transform.position.y - 0.5f) {
-            PlayerMove = new Vector2(0,-1);
+            PlayerMove = new Vector2(0, -1);
         } else {
             PlayerMove = Vector2.zero;
         }
-	}
-
-	private void FixedUpdate()
-    {
-        Rigidbody.velocity = PlayerMove * MovementSpeed;
 	}
 }
