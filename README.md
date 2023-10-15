@@ -15,4 +15,4 @@ They can compete against another player controlling a second paddle on the oppos
 - ~~fix random ball start~~
 
 
-![pingpong](https://github.com/nahid0335/PingPong/assets/54880783/6d290a79-6e7b-4aff-b527-080cb559090e)
+![pingpong](https://github.com/nahid0335/PingPong/blob/master/Image/pingpong.PNG)
