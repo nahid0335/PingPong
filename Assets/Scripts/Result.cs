@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// result scene
+/// </summary>
 public class Result : MonoBehaviour
 {
     [SerializeField]
